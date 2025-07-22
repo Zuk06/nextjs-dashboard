@@ -1,5 +1,26 @@
-## Next.js App Router Course - Starter
+## Next.js App Router Course
 
-This is the starter template for the Next.js App Router Course. It contains the starting code for the dashboard application.
+Ce dépôt contient le code de départ pour le cours Next.js App Router (Dashboard).
 
-For more information, see the [course curriculum](https://nextjs.org/learn) on the Next.js Website.
+Pour plus d'informations, consulte le [curriculum du cours](https://nextjs.org/learn) sur le site officiel de Next.js.
+
+---
+
+## Choix du template
+
+- **Starter (départ minimal, pour suivre le tutoriel pas à pas) :**
+  
+  ```sh
+  npx create-next-app@latest nextjs-dashboard --example "https://github.com/vercel/next-learn/tree/main/dashboard/starter-example" --use-pnpm
+  ```
+
+- **Final (projet complet, tout le code final) :**
+  
+  ```sh
+  npx create-next-app@latest nextjs-dashboard --example "https://github.com/vercel/next-learn/tree/main/dashboard/final-example" --use-pnpm
+  ```
+
+---
+
+- [Lien GitHub du starter](https://github.com/vercel/next-learn/tree/main/dashboard/starter-example)
+- [Lien GitHub du final](https://github.com/vercel/next-learn/tree/main/dashboard/final-example)
