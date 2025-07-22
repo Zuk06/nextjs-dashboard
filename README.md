@@ -24,3 +24,11 @@ Pour plus d'informations, consulte le [curriculum du cours](https://nextjs.org/l
 
 - [Lien GitHub du starter](https://github.com/vercel/next-learn/tree/main/dashboard/starter-example)
 - [Lien GitHub du final](https://github.com/vercel/next-learn/tree/main/dashboard/final-example)
+
+---
+
+## Ressources utiles
+
+- [Configurer la base de données (tuto officiel)](https://nextjs.org/learn/dashboard-app/setting-up-your-database)
+- [Documentation Vercel : environnements de déploiement](https://vercel.com/docs/deployments/environments#preview-environment-pre-production#preview-urls)
+
