@@ -89,14 +89,54 @@ export async function fetchCardData() {
 }
 
 const ITEMS_PER_PAGE = 5;
-export async function fetchFilteredInvoices(
-  query: string,
-  currentPage: number,
-) {
-  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+// Ancienne version : deux requêtes séparées (une pour les données paginées, une pour le total)
+// export async function fetchFilteredInvoices(
+//   query: string,
+//   currentPage: number,
+// ) {
+//   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+//
+//   try {
+//     const invoices = await sql<InvoicesTable[]>`
+//       SELECT
+//         invoices.id,
+//         invoices.amount,
+//         invoices.date,
+//         invoices.status,
+//         customers.name,
+//         customers.email,
+//         customers.image_url
+//       FROM invoices
+//       JOIN customers ON invoices.customer_id = customers.id
+//       WHERE
+//         customers.name ILIKE ${`%${query}%`} OR
+//         customers.email ILIKE ${`%${query}%`} OR
+//         invoices.amount::text ILIKE ${`%${query}%`} OR
+//         invoices.date::text ILIKE ${`%${query}%`} OR
+//         invoices.status ILIKE ${`%${query}%`}
+//       ORDER BY invoices.date DESC
+//       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+//     `;
+//
+//     return invoices;
+//   } catch (error) {
+//     console.error('Database Error:', error);
+//     throw new Error('Failed to fetch invoices.');
+//   }
+// }
 
+/**
+ * Nouvelle version : une seule requête pour obtenir à la fois les factures paginées et le total.
+ * Utilise COUNT(*) OVER() pour inclure le total dans chaque ligne retournée.
+ * Avantage : un seul aller-retour à la base de données, plus efficace.
+ * Différence :
+ *   - Ancienne version : il fallait une deuxième requête pour obtenir le total (COUNT),
+ *     ici le total est inclus dans chaque ligne retournée (champ total_count).
+ */
+export async function fetchInvoicesAndTotal(query: string, currentPage: number) {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   try {
-    const invoices = await sql<InvoicesTable[]>`
+    const invoices = await sql`
       SELECT
         invoices.id,
         invoices.amount,
@@ -104,7 +144,8 @@ export async function fetchFilteredInvoices(
         invoices.status,
         customers.name,
         customers.email,
-        customers.image_url
+        customers.image_url,
+        COUNT(*) OVER() AS total_count
       FROM invoices
       JOIN customers ON invoices.customer_id = customers.id
       WHERE
@@ -116,11 +157,16 @@ export async function fetchFilteredInvoices(
       ORDER BY invoices.date DESC
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
-
-    return invoices;
+    // On extrait le total depuis la première ligne (s'il y a des résultats)
+    const total = invoices.length > 0 ? Number(invoices[0].total_count) : 0;
+    return {
+      items: invoices,
+      total,
+      totalPages: Math.ceil(total / ITEMS_PER_PAGE)
+    };
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch invoices.');
+    throw new Error('Failed to fetch invoices and total.');
   }
 }
 
