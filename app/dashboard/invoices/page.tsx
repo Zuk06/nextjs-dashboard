@@ -19,7 +19,6 @@ export default async function Page(props: {
 
   // Nouvelle version : une seule requête pour obtenir à la fois les items paginés et le nombre total de pages
   const { items, totalPages } = await fetchInvoicesAndTotal(query, currentPage);
-  console.log(totalPages);
   return (
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
