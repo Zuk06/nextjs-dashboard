@@ -135,7 +135,9 @@ const ITEMS_PER_PAGE = 5;
 export async function fetchInvoicesAndTotal(query: string, currentPage: number) {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   try {
-    const invoices = await sql`
+    // On définit un type local qui inclut total_count
+    type InvoicesTableWithTotal = InvoicesTable & { total_count: number };
+    const invoices = await sql<InvoicesTableWithTotal[]>`
       SELECT
         invoices.id,
         invoices.amount,
@@ -156,10 +158,11 @@ export async function fetchInvoicesAndTotal(query: string, currentPage: number) 
       ORDER BY invoices.date DESC
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
-    // On extrait le total depuis la première ligne (s'il y a des résultats)
     const total = invoices.length > 0 ? Number(invoices[0].total_count) : 0;
+    // On retire total_count de chaque objet avant de retourner
+    const items: InvoicesTable[] = invoices.map(({ total_count, ...rest }) => rest);
     return {
-      items: invoices,
+      items,
       total,
       totalPages: Math.ceil(total / ITEMS_PER_PAGE)
     };
