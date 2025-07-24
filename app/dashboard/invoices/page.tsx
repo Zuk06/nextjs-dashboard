@@ -30,7 +30,7 @@ export default async function Page(props: {
       </div>
       {/* On passe directement les items à Table */}
       <Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
-        <Table items={items} />
+        <Table items={items as any[]} />
       </Suspense>
       <div className="mt-5 flex w-full justify-center">
         <Pagination totalPages={totalPages} />
