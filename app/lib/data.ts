@@ -160,17 +160,17 @@ export async function fetchInvoicesAndTotal(query: string, currentPage: number) 
     `;
     const total = invoices.length > 0 ? Number(invoices[0].total_count) : 0;
     // On retire total_count de chaque objet avant de retourner
-    const items: InvoicesTable[] = invoices.map(({ total_count, ...rest }) => rest);
+    const items = invoices.map(({ total_count, ...rest }) => rest);
     return {
       items,
-      total,
-      totalPages: Math.ceil(total / ITEMS_PER_PAGE)
+      totalPages: Math.ceil(total / ITEMS_PER_PAGE),
     };
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch invoices and total.');
   }
 }
+
 
 export async function fetchInvoicesPages(query: string) {
   try {
