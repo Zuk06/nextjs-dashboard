@@ -1,6 +1,7 @@
 import '@/app/ui/global.css';
 import { inter } from '@/app/ui/fonts';
 import { Metadata } from 'next';
+import InstallPwaButton from '@/app/ui/install-pwa-button';
 
 export const metadata: Metadata = {
   title: {
@@ -22,7 +23,10 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#2563eb" />
       </head>
-      <body className={`${inter.className} antialiased`}>{children}</body>
+      <body className={`${inter.className} antialiased`}>
+        <InstallPwaButton />
+        {children}
+      </body>
     </html>
   );
 }
