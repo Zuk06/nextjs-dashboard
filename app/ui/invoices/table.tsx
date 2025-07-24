@@ -2,8 +2,9 @@ import Image from 'next/image';
 import { UpdateInvoice, DeleteInvoice } from '@/app/ui/invoices/buttons';
 import InvoiceStatus from '@/app/ui/invoices/status';
 import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
+import type { InvoicesTable } from '@/app/lib/definitions';
 
-export default function InvoicesTable({ items }: { items: any[] }) {
+export default function InvoicesTable({ items }: { items: InvoicesTable[] }) {
   const invoices = items;
 
   return (
