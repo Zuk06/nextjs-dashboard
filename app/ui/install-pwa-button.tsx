@@ -12,6 +12,11 @@ declare global {
     }>;
     prompt(): Promise<void>;
   }
+
+  interface Window {
+    addEventListener(type: 'beforeinstallprompt', listener: (event: BeforeInstallPromptEvent) => void, options?: boolean | AddEventListenerOptions): void;
+    removeEventListener(type: 'beforeinstallprompt', listener: (event: BeforeInstallPromptEvent) => void, options?: boolean | EventListenerOptions): void;
+  }
 }
 
 export default function InstallPwaButton() {
@@ -24,15 +29,14 @@ export default function InstallPwaButton() {
       setDeferredPrompt(e);
       setShowButton(true);
     };
-    (window as any).addEventListener('beforeinstallprompt', handler);
-    return () => (window as any).removeEventListener('beforeinstallprompt', handler);
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
   }, []);
 
   const handleInstallClick = async () => {
     if (!deferredPrompt) return;
     deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    // Optionnel : gérer le résultat ("accepted" ou "dismissed")
+    await deferredPrompt.userChoice; // Removed unused 'outcome'
     setDeferredPrompt(null);
     setShowButton(false);
   };
@@ -45,7 +49,7 @@ export default function InstallPwaButton() {
       className="fixed bottom-4 right-4 flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
     >
       <ArrowDownTrayIcon className="h-5 w-5" />
-      Installer l'application
+      Installer l&apos;application
     </button>
   );
 }
