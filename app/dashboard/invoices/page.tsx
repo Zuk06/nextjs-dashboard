@@ -6,7 +6,13 @@ import { lusitana } from '@/app/ui/fonts';
 import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
 import { fetchInvoicesAndTotal } from '@/app/lib/data';
- 
+import { Metadata } from 'next';
+import type { InvoicesTable } from '@/app/lib/definitions';
+
+export const metadata: Metadata = {
+  title: 'Invoices',
+};
+
 export default async function Page(props: {
   searchParams?: Promise<{
     query?: string;
@@ -17,8 +23,9 @@ export default async function Page(props: {
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
 
-  // Nouvelle version : une seule requête pour obtenir à la fois les items paginés et le nombre total de pages
+  // Utilise la fonction optimisée pour récupérer les items paginés et le total
   const { items, totalPages } = await fetchInvoicesAndTotal(query, currentPage);
+
   return (
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
@@ -28,9 +35,8 @@ export default async function Page(props: {
         <Search placeholder="Search invoices..." />
         <CreateInvoice />
       </div>
-      {/* On passe directement les items à Table */}
       <Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
-        <Table items={items as any[]} />
+        <Table items={Array.from(items) as InvoicesTable[]} />
       </Suspense>
       <div className="mt-5 flex w-full justify-center">
         <Pagination totalPages={totalPages} />
