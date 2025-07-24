@@ -37,3 +37,7 @@ Pour plus d'informations, consulte le [curriculum du cours](https://nextjs.org/l
 # macOS
 openssl rand -base64 32
 # Windows can use https://generate-secret.vercel.app/32
+
+## User test
+E-mail:user@nextmail.com
+Mot de passe:123456
