@@ -32,3 +32,8 @@ Pour plus d'informations, consulte le [curriculum du cours](https://nextjs.org/l
 - [Configurer la base de données (tuto officiel)](https://nextjs.org/learn/dashboard-app/setting-up-your-database)
 - [Documentation Vercel : environnements de déploiement](https://vercel.com/docs/deployments/environments#preview-environment-pre-production#preview-urls)
 
+## Générer une clé secrète
+
+# macOS
+openssl rand -base64 32
+# Windows can use https://generate-secret.vercel.app/32
