@@ -11,6 +11,7 @@ import { Button } from '@/app/ui/button';
 import { createInvoice } from '@/app/lib/actions/invoices.action';
 import { useActionState } from 'react';
 
+// Formulaire de creation d'une invoice
 export default function Form({ customers }: { customers: CustomerField[] }) {
   const initialState = { message: '', errors: {} };
   const [state, formAction] = useActionState(createInvoice, initialState);
