@@ -25,7 +25,7 @@ export default async function Page(props: {
 
   // Utilise la fonction optimisée pour récupérer les items paginés et le total
   const { items, totalPages } = await fetchInvoicesAndTotal(query, currentPage);
-
+  // console.log("items",items);
   return (
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
